@@ -1,5 +1,7 @@
 import numpy as np
 import pickle
+from typing import Optional, List, Dict
+from sqlitedict import SqliteDict
 
 class Vocab(object):
     r''' Vocabulary used to store word embeddings for context similarity
@@ -264,3 +266,10 @@ class Vocab(object):
             vocab = cls()
             vocab.__dict__ = pickle.load(f)
         return vocab
+
+    @classmethod
+    def loadsqlite(cls, path):
+        vocab = cls()
+        vocab.vocab = SqliteDict(filename='/tmp/vocab.db', tablename='vocab',  journal_mode="OFF", flag='r', autocommit=False)
+        return vocab
+    

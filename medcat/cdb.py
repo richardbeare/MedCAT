@@ -11,6 +11,8 @@ from medcat.utils.matutils import unitvec, sigmoid
 from medcat.utils.ml_utils import get_lr_linking
 from medcat.config import Config, weighted_average
 
+import os.path
+from sqlitedict import SqliteDict
 
 class CDB(object):
     """ Concept DataBase - holds all information necessary for NER+L.
@@ -83,7 +85,12 @@ class CDB(object):
         self._optim_params = None
 
 
-    def get_name(self, cui):
+    def __del__(self):
+        print('Cleaning shelves')
+        for i in self._sqlitehandles:
+            i.close()
+            
+    def get_name(self, cui:str) -> str:
         r''' Returns preferred name if it exists, otherwise it will return
         the logest name assigend to the concept.
 
@@ -396,8 +403,49 @@ class CDB(object):
 
         return cdb
 
+<<<<<<< HEAD
 
     def import_old_cdb_vectors(self, cdb):
+=======
+    @classmethod
+    def loadsqlite(cls, path1, path2, config=None):
+        r''' Load and return a CDB. This is a test using shelves.
+             This is only useful for a read only mode, not a training mode
+             and is intended to save RAM in the production server.
+
+        Args:
+            path1 (`str`):
+                Path to a folder containing the non dict cdb
+            path2 (`str`):
+                Path to folder containg the shelves, from which to load data.
+        '''
+        with open(path1, 'rb') as f:
+            # Again no idea
+            data = dill.load(f)
+            if config is None:
+                config = Config.from_dict(data['config'])
+                cls._ensure_backward_compatibility(config)
+
+            # Create an instance of the CDB (empty)
+            cdb = cls(config=config)
+            
+            # Load data into the new cdb instance
+            for k in cdb.__dict__:
+                if k in data['cdb']:
+                    cdb.__dict__[k] = data['cdb'][k]
+
+        # now we open the sqlite versions
+        allkeys = SqliteDict.get_tablenames(path2)
+
+        for k in allkeys:
+            print("Loading ", k)
+            cdb.__dict__[k] = SqliteDict(filename=path2, tablename=k, journal_mode='OFF', flag='r', autocommit=False)
+        return cdb
+    
+
+    @no_type_check
+    def import_old_cdb_vectors(self, cdb: "CDB") -> None:
+>>>>>>> 1527453... First pass at using sqlitedict
         # Import context vectors
         for cui in self.cui2names: # Loop through all CUIs in the current CDB
             if cui in cdb.cui2context_vec:

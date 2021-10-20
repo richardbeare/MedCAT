@@ -39,7 +39,8 @@ setuptools.setup(
         'aiofiles~=0.8.0',
         'ipywidgets~=7.6.5',
         'xxhash==2.0.2',
-        ],
+        'sqlitedict'
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",

@@ -270,6 +270,6 @@ class Vocab(object):
     @classmethod
     def loadsqlite(cls, path):
         vocab = cls()
-        vocab.vocab = SqliteDict(filename='/tmp/vocab.db', tablename='vocab',  journal_mode="OFF", flag='r', autocommit=False)
+        vocab.vocab = SqliteDict(filename=path, tablename='vocab',  journal_mode="OFF", flag='r', autocommit=False)
         return vocab
     

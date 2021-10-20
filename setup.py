@@ -31,6 +31,7 @@ setuptools.setup(
         'dill~=0.3.3',
         'datasets~=1.6.0',
         'jsonpickle~=2.0.0',
+        'sqlitedict'
         ],
     classifiers=[
         "Programming Language :: Python :: 3",

@@ -403,10 +403,6 @@ class CDB(object):
 
         return cdb
 
-<<<<<<< HEAD
-
-    def import_old_cdb_vectors(self, cdb):
-=======
     @classmethod
     def loadsqlite(cls, path1, path2, config=None):
         r''' Load and return a CDB. This is a test using shelves.
@@ -424,7 +420,7 @@ class CDB(object):
             data = dill.load(f)
             if config is None:
                 config = Config.from_dict(data['config'])
-                cls._ensure_backward_compatibility(config)
+                #cls._ensure_backward_compatibility(config)
 
             # Create an instance of the CDB (empty)
             cdb = cls(config=config)
@@ -443,9 +439,7 @@ class CDB(object):
         return cdb
     
 
-    @no_type_check
-    def import_old_cdb_vectors(self, cdb: "CDB") -> None:
->>>>>>> 1527453... First pass at using sqlitedict
+    def import_old_cdb_vectors(self, cdb):
         # Import context vectors
         for cui in self.cui2names: # Loop through all CUIs in the current CDB
             if cui in cdb.cui2context_vec:

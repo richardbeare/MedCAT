@@ -12,7 +12,7 @@ from medcat.utils.ml_utils import get_lr_linking
 from medcat.config import Config, weighted_average
 
 import os.path
-from sqlitedict import SqliteDict
+from medcat.sqlitedictfork import SqliteDictFork
 
 class CDB(object):
     """ Concept DataBase - holds all information necessary for NER+L.
@@ -431,11 +431,11 @@ class CDB(object):
                     cdb.__dict__[k] = data['cdb'][k]
 
         # now we open the sqlite versions
-        allkeys = SqliteDict.get_tablenames(path2)
+        allkeys = SqliteDictFork.get_tablenames(path2)
 
         for k in allkeys:
             print("Loading ", k)
-            cdb.__dict__[k] = SqliteDict(filename=path2, tablename=k, journal_mode='OFF', flag='r', autocommit=False)
+            cdb.__dict__[k] = SqliteDictFork(filename=path2, tablename=k, journal_mode='OFF', flag='r', autocommit=False)
         return cdb
     
 

@@ -9,10 +9,13 @@ from dill import Pickler, Unpickler
 thecdb = '/slowdata/richardb/CogStackTests/cdb_mimic_md_21-April-2021.dat'
 thevocab = '/slowdata/richardb/CogStackTests/vocab.dat'
 
+thecdb = '/home/richardb/Downloads/cdb-medmen-v1.dat'
+thevocab = '/home/richardb/Downloads/vocab.dat'
+
 sqlite_cdb = '/tmp/cdb.sqlite' 
 nonsqlite_cdb = '/tmp/cdb_mimic_non_dict.dat'
 
-sqlite_vocab = '/tmp/vocab.db'
+sqlite_vocab = '/tmp/vocab.sqlite'
 
 with open(thecdb, 'rb') as f:
     data=dill.load(f)
@@ -52,6 +55,7 @@ del data['cdb']['snames']
 with open(nonsqlite_cdb, 'wb') as ff:
     dill.dump(data, ff)
 
+import pickle
 
 ## Convert vocab too?
 with open(thevocab, 'rb') as f:
